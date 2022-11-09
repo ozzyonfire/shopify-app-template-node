@@ -1,13 +1,13 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
-  "private": true,
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Express JS server for hosting the NextJS front end and handling API routes",
+  "main": "index.js",
   "scripts": {
-    "dev": "next dev -p %FRONTEND_PORT%",
-    "build": "next build",
-    "start": "next start -p %FRONTEND_PORT%",
-    "lint": "next lint"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "author": "Matt Oskamp",
+  "license": "ISC",
   "dependencies": {
     "@shopify/app-bridge": "^3.4.3",
     "@shopify/app-bridge-react": "^3.4.3",
@@ -18,10 +18,11 @@
     "@types/react-dom": "18.0.8",
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.2",
+    "express": "^4.18.2",
     "next": "13.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "4.8.4"
+    "typescript": "^4.8.4"
   },
   "devDependencies": {
     "cross-env": "^7.0.3"

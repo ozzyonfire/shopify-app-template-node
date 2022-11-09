@@ -15,7 +15,7 @@ import { AppInstallations } from "./app_installations.js";
 
 const USE_ONLINE_TOKENS = false;
 
-const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
+const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT || '3001', 10);
 
 // TODO: There should be provided by env vars
 const DEV_INDEX_PATH = `${process.cwd()}/frontend/`;
@@ -24,11 +24,11 @@ const PROD_INDEX_PATH = `${process.cwd()}/frontend/dist/`;
 const DB_PATH = `${process.cwd()}/database.sqlite`;
 
 Shopify.Context.initialize({
-  API_KEY: process.env.SHOPIFY_API_KEY,
-  API_SECRET_KEY: process.env.SHOPIFY_API_SECRET,
-  SCOPES: process.env.SCOPES.split(","),
-  HOST_NAME: process.env.HOST.replace(/https?:\/\//, ""),
-  HOST_SCHEME: process.env.HOST.split("://")[0],
+  API_KEY: process.env.SHOPIFY_API_KEY || '',
+  API_SECRET_KEY: process.env.SHOPIFY_API_SECRET || '',
+  SCOPES: process.env.SCOPES.split(",") || '',
+  HOST_NAME: process.env.HOST.replace(/https?:\/\//, "") || '',
+  HOST_SCHEME: process.env.HOST.split("://")[0] || '',
   API_VERSION: LATEST_API_VERSION,
   IS_EMBEDDED_APP: true,
   // This should be replaced with your preferred storage strategy
@@ -199,6 +199,20 @@ export async function createServer(
       .status(200)
       .set("Content-Type", "text/html")
       .send(readFileSync(htmlFile));
+  });
+
+  app.get('/auth', async (req, res) => {
+    const shop = Shopify.Utils.sanitizeShop(req.query.shop);
+    const appInstalled = await AppInstallations.includes(shop);
+    if (!appInstalled && !req.originalUrl.match(/^\/exitiframe/i)) {
+      return redirectToAuth(req, res, app);
+    }
+
+    if (Shopify.Context.IS_EMBEDDED_APP && req.query.embedded !== "1") {
+      const embeddedUrl = Shopify.Utils.getEmbeddedAppUrl(req);
+
+      return res.redirect(embeddedUrl + req.path);
+    }
   });
 
   return { app };
