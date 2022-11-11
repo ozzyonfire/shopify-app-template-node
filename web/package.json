@@ -4,7 +4,9 @@
   "description": "Express JS server for hosting the NextJS front end and handling API routes",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && next build",
+    "dev": "concurrently \"tsc -w\" \"nodemon dist/index.js\""
   },
   "author": "Matt Oskamp",
   "license": "ISC",
@@ -13,9 +15,12 @@
     "@shopify/app-bridge-react": "^3.4.3",
     "@shopify/app-bridge-utils": "^3.4.3",
     "@shopify/polaris": "^10.11.0",
+    "@shopify/shopify-api": "^5.2.0",
+    "@tsconfig/node16": "^1.0.3",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
+    "cookie-parser": "^1.4.6",
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.2",
     "express": "^4.18.2",
@@ -25,6 +30,9 @@
     "typescript": "^4.8.4"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "@types/express": "^4.17.14",
+    "concurrently": "^7.5.0",
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.20"
   }
 }

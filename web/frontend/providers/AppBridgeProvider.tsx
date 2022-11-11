@@ -57,6 +57,9 @@ export function AppBridgeProvider({ children }: { children: React.ReactNode }) {
     [host]
   );
 
+  if (!router.isReady) { // Todo: show a nice loading bar
+    return <Page>Loading...</Page>;
+  }
 
   if (!process.env.NEXT_PUBLIC_SHOPIFY_API_KEY || !appBridgeConfig.host) {
     const bannerProps = !process.env.NEXT_PUBLIC_SHOPIFY_API_KEY
