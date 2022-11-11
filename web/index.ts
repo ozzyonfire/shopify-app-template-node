@@ -1,10 +1,14 @@
 import Shopify, { LATEST_API_VERSION } from '@shopify/shopify-api';
 import express from 'express';
 import next from 'next';
-import { join } from 'path';
 import { AppInstallations } from './app/app_installations';
 import redirectToAuth from './app/helpers/redirect-to-auth';
 import applyAuthMiddleware from './app/middleware/auth';
+import helloAPI from './app/api/hello';
+import { setupGDPRWebHooks } from './app/gdpr';
+import config from './config.json';
+
+const USE_ONLINE_TOKENS = config.onlineTokens;
 
 const PORT = process.env.PORT || 9000;
 const DB_PATH = `${process.cwd()}/database.sqlite`;
@@ -23,6 +27,27 @@ Shopify.Context.initialize({
   ...(process.env.SHOP_CUSTOM_DOMAIN && { CUSTOM_SHOP_DOMAINS: [process.env.SHOP_CUSTOM_DOMAIN] }),
 });
 
+// NOTE: If you choose to implement your own storage strategy using
+// Shopify.Session.CustomSessionStorage, you MUST implement the optional
+// findSessionsByShopCallback and deleteSessionsCallback methods.  These are
+// required for the app_installations.js component in this template to
+// work properly.
+
+Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
+  path: "/api/webhooks",
+  webhookHandler: async (_topic, shop, _body) => {
+    await AppInstallations.delete(shop);
+  },
+});
+
+// This sets up the mandatory GDPR webhooks. You’ll need to fill in the endpoint
+// in the “GDPR mandatory webhooks” section in the “App setup” tab, and customize
+// the code when you store customer data.
+//
+// More details can be found on shopify.dev:
+// https://shopify.dev/apps/webhooks/configuration/mandatory-webhooks
+setupGDPRWebHooks("/api/webhooks");
+
 const nextApp = next({
   dev: process.env.NODE_ENV !== 'production',
   dir: './frontend',
@@ -32,6 +57,8 @@ const handle = nextApp.getRequestHandler();
 
 nextApp.prepare().then(() => {
   const app = express();
+  app.set("use-online-tokens", USE_ONLINE_TOKENS);
+
   applyAuthMiddleware(app, {
     billing: {
       required: false
@@ -41,6 +68,15 @@ nextApp.prepare().then(() => {
   // Let the core next.js files through
   app.get('/_next/*', (req, res) => {
     return handle(req, res);
+  });
+
+  // Define server api routes
+  app.use('/api/hello', helloAPI);
+
+  // Setup graphql proxy
+  app.use('/graphql', async (req, res) => {
+    const response = await Shopify.Utils.graphqlProxy(req, res);
+    res.send(response.body);
   });
 
   app.use((req, res, next) => {
@@ -59,8 +95,6 @@ nextApp.prepare().then(() => {
   });
 
   app.use('/*', async (req, res) => {
-    console.log(req.url);
-
     if (typeof req.query.shop !== "string") {
       console.log('No shop found in session or query');
       res.status(500);
@@ -75,7 +109,7 @@ nextApp.prepare().then(() => {
     const appInstalled = await AppInstallations.includes(shop);
 
     if (!appInstalled && !req.originalUrl.match(/^\/exitiframe/i)) {
-      return redirectToAuth(req, res, app);
+      return redirectToAuth(req, res);
     }
 
     if (Shopify.Context.IS_EMBEDDED_APP && req.query.embedded !== "1") {

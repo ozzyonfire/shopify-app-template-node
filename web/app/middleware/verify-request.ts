@@ -7,6 +7,8 @@ import ensureBilling, {
 import redirectToAuth from "../helpers/redirect-to-auth";
 
 import returnTopLevelRedirection from "../helpers/return-top-level-redirection";
+import config from '../../config.json';
+const USE_ONLINE_TOKENS = config.onlineTokens;
 
 const TEST_GRAPHQL_QUERY = `
 {
@@ -22,25 +24,23 @@ export interface IVerifyRequestOptions {
   }
 }
 
-export default function verifyRequest(
-  app: Express,
-  billingOptions: IVerifyRequestOptions
-) {
+export default function verifyRequest(billingOptions: IVerifyRequestOptions) {
+  const {
+    billing,
+  } = billingOptions;
   return async (req: Request, res: Response, next: NextFunction) => {
     const session = await Shopify.Utils.loadCurrentSession(
       req,
       res,
-      app.get("use-online-tokens")
+      USE_ONLINE_TOKENS
     );
 
-    const {
-      billing
-    } = billingOptions;
+    console.log('session', session);
 
     let shop = Shopify.Utils.sanitizeShop(req.query.shop as string);
     if (session && shop && session.shop !== shop) {
       // The current request is for a different shop. Redirect gracefully.
-      return redirectToAuth(req, res, app);
+      return redirectToAuth(req, res);
     }
 
     if (session?.isActive()) {
@@ -97,7 +97,7 @@ export default function verifyRequest(
 
     if (!shop) {
       console.log('No shop found in session or query');
-      return redirectToAuth(req, res, app);
+      return redirectToAuth(req, res);
     }
 
     returnTopLevelRedirection(

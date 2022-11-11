@@ -1,7 +1,7 @@
 {
   "name": "shopify-test-app",
   "version": "1.0.0",
-  "main": "web/index.js",
+  "main": "web/dist/index.js",
   "license": "UNLICENSED",
   "scripts": {
     "shopify": "shopify",

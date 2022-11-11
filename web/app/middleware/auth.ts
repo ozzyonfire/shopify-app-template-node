@@ -16,7 +16,7 @@ export default function applyAuthMiddleware(
   } = billingOptions;
 
   app.get("/api/auth", async (req, res) => {
-    return redirectToAuth(req, res, app)
+    return redirectToAuth(req, res)
   });
 
   app.get("/api/auth/callback", async (req, res) => {
@@ -87,7 +87,7 @@ export default function applyAuthMiddleware(
         case e instanceof Shopify.Errors.CookieNotFound:
         case e instanceof Shopify.Errors.SessionNotFound:
           // This is likely because the OAuth session cookie expired before the merchant approved the request
-          return redirectToAuth(req, res, app);
+          return redirectToAuth(req, res);
           break;
         default:
           res.status(500);

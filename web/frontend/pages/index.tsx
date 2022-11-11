@@ -1,19 +1,44 @@
-import { Page, Text, TextStyle } from '@shopify/polaris'
+import { Card, Page, Text } from '@shopify/polaris'
 import { GetServerSidePropsContext } from 'next';
-import Head from 'next/head'
-import Image from 'next/image'
+import { useState } from 'react';
+import { useFetcher } from '../providers/APIProvider';
+
+interface Data {
+  name: string;
+  height: string;
+}
 
 export default function Home() {
+  const fetcher = useFetcher();
+  const [data, setData] = useState<Data | null>(null);
+
+  const handleGetAPIRequest = async () => {
+    const data = await fetcher<Data>('/api/hello');
+    setData(data);
+  }
+
   return (
     <Page
       title="Home"
     >
-      <Text as='p' variant='bodyMd'>This is a test. With a change! Again</Text>
+      <Card
+        sectioned
+        title="API Call to the Express JS Server"
+        primaryFooterAction={{
+          content: 'Call API',
+          onAction: handleGetAPIRequest,
+        }}
+      >
+        <Text as='p' variant='bodyMd'>Call the express server from within your app. The request is verified use session tokens.</Text>
+        {data && (
+          <Text as="h1" variant="headingSm">
+            {data.name} is {data.height} tall.
+          </Text>
+        )}
+      </Card>
     </Page>
   )
 }
-
-// export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 //   /**
 //    * We need to get a couple things ready before the page loads
@@ -23,7 +48,7 @@ export default function Home() {
 //    * 4. If the app needs to be authorized, redirect to the OAuth page
 //    * 5. If the app is authorized, check to see if there is a subscription
 //    */
-
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
 //   const { shop, host, session } = context.query;
 //   const apiKey = process.env.SHOPIFY_API_KEY;
 

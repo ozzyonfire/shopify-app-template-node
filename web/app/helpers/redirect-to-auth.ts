@@ -1,7 +1,8 @@
 import { Shopify } from "@shopify/shopify-api";
 import { Request, Response, Express } from "express";
+import config from '../../config.json';
 
-export default async function redirectToAuth(req: Request, res: Response, app: Express) {
+export default async function redirectToAuth(req: Request, res: Response) {
   if (!req.query.shop) {
     res.status(500);
     return res.send("No shop provided");
@@ -11,7 +12,7 @@ export default async function redirectToAuth(req: Request, res: Response, app: E
     return clientSideRedirect(req, res);
   }
 
-  return await serverSideRedirect(req, res, app);
+  return await serverSideRedirect(req, res);
 }
 
 function clientSideRedirect(req: Request, res: Response) {
@@ -35,13 +36,13 @@ function clientSideRedirect(req: Request, res: Response) {
   return res.redirect(`/exitiframe?${queryParams}`);
 }
 
-async function serverSideRedirect(req: Request, res: Response, app: Express) {
+async function serverSideRedirect(req: Request, res: Response) {
   const redirectUrl = await Shopify.Auth.beginAuth(
     req,
     res,
     req.query.shop as string,
     "/api/auth/callback",
-    app.get("use-online-tokens")
+    config.onlineTokens
   );
 
   return res.redirect(redirectUrl);
