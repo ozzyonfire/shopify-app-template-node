@@ -1,11 +1,11 @@
 import Shopify, { LATEST_API_VERSION } from '@shopify/shopify-api';
 import express from 'express';
 import next from 'next';
-import { AppInstallations } from './app/app_installations';
-import redirectToAuth from './app/helpers/redirect-to-auth';
-import applyAuthMiddleware from './app/middleware/auth';
-import helloAPI from './app/api/hello';
-import { setupGDPRWebHooks } from './app/gdpr';
+import { AppInstallations } from './app_installations';
+import redirectToAuth from './helpers/redirect-to-auth';
+import applyAuthMiddleware from './middleware/auth';
+import helloAPI from './api/hello';
+import { setupGDPRWebHooks } from './gdpr';
 import config from './config.json';
 
 const USE_ONLINE_TOKENS = config.onlineTokens;
@@ -119,6 +119,23 @@ nextApp.prepare().then(() => {
     }
 
     return handle(req, res);
+  });
+
+  app.get('/auth', async (req, res) => {
+    const shop = Shopify.Utils.sanitizeShop(req.query.shop as string);
+    if (!shop) {
+      res.status(500);
+      return res.send("Invalid shop provided");
+    }
+    const appInstalled = await AppInstallations.includes(shop);
+    if (!appInstalled && !req.originalUrl.match(/^\/exitiframe/i)) {
+      return redirectToAuth(req, res);
+    }
+
+    if (Shopify.Context.IS_EMBEDDED_APP && req.query.embedded !== "1") {
+      const embeddedUrl = Shopify.Utils.getEmbeddedAppUrl(req);
+      return res.redirect(embeddedUrl + req.path);
+    }
   });
 
   // app.get('*', (req, res) => handle(req, res));

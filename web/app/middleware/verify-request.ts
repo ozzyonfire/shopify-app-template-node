@@ -7,7 +7,7 @@ import ensureBilling, {
 import redirectToAuth from "../helpers/redirect-to-auth";
 
 import returnTopLevelRedirection from "../helpers/return-top-level-redirection";
-import config from '../../config.json';
+import config from '../config.json';
 const USE_ONLINE_TOKENS = config.onlineTokens;
 
 const TEST_GRAPHQL_QUERY = `
@@ -38,6 +38,8 @@ export default function verifyRequest(billingOptions: IVerifyRequestOptions) {
     console.log('session', session);
 
     let shop = Shopify.Utils.sanitizeShop(req.query.shop as string);
+    console.log('shop', shop);
+
     if (session && shop && session.shop !== shop) {
       // The current request is for a different shop. Redirect gracefully.
       return redirectToAuth(req, res);
@@ -90,6 +92,7 @@ export default function verifyRequest(billingOptions: IVerifyRequestOptions) {
           if (bearerPresent) {
             const payload = Shopify.Utils.decodeSessionToken(bearerPresent[1]);
             shop = payload.dest.replace("https://", "");
+            console.log('shop after decode', shop);
           }
         }
       }

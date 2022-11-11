@@ -240,14 +240,14 @@
   resolved "https://registry.yarnpkg.com/@oclif/screen/-/screen-3.0.3.tgz#e679ad10535e31d333f809f7a71335cc9aef1e55"
   integrity sha512-KX8gMYA9ujBPOd1HFsV9e0iEx7Uoj8AG/3YsW4TtWQTg4lJvr82qNm7o/cFQfYRIt+jw7Ew/4oL4A22zOT+IRA==
 
-"@shopify/app@3.22.0":
-  version "3.22.0"
-  resolved "https://registry.yarnpkg.com/@shopify/app/-/app-3.22.0.tgz#fd03e5b8dc42bd995cc93a311077c7a70f6bee62"
-  integrity sha512-tr3fWB/Lu6KbrTZqmZf3p3nbHdAr4RcEqLMCKg/zlqNcS5IgniaGM9/JJatmUKbRCeISs/jYmJ5ED/iazEW5KA==
+"@shopify/app@^3.22.1":
+  version "3.22.1"
+  resolved "https://registry.yarnpkg.com/@shopify/app/-/app-3.22.1.tgz#fe4dbdc07ac22b706188043f2eb0c18fdb3688ce"
+  integrity sha512-K2+P8aWQHLhAJq6tv0H76S5Z72lcJi9Sq4Q0baE2l2bhGmFZrEWj0byV7RpsBmzF6z/+2R+wQMTRcnILEXBwaQ==
   dependencies:
     "@luckycatfactory/esbuild-graphql-loader" "3.7.0"
     "@oclif/core" "1.9.2"
-    "@shopify/cli-kit" "3.22.0"
+    "@shopify/cli-kit" "3.22.1"
     "@shopify/shopify-cli-extensions" "3.21.0"
     abort-controller "^3.0.0"
     chokidar "3.5.3"
@@ -258,10 +258,10 @@
     serve-static "1.15.0"
     ws "8.8.1"
 
-"@shopify/cli-kit@3.22.0":
-  version "3.22.0"
-  resolved "https://registry.yarnpkg.com/@shopify/cli-kit/-/cli-kit-3.22.0.tgz#406a5599d7e9af83f88a37ecb408084bc255f055"
-  integrity sha512-R/uIAneTU0c1pGtC/7yFggB5C9s+tSwSJZ9TxR/x3Xb3TGJYUNYs/OtCygKiZEoL0oR79y1F6rj1EFjovF+ydg==
+"@shopify/cli-kit@3.22.1":
+  version "3.22.1"
+  resolved "https://registry.yarnpkg.com/@shopify/cli-kit/-/cli-kit-3.22.1.tgz#846ec071f24917f04521fdd1b344cd9dffc7f921"
+  integrity sha512-q/c4pU6NUvdUU+bTnCiYMakPI8VdDc3+YaEdlpmBUb6jUJcig0tEHh29VHWDsmJRfgaGD97sblGUb+VOaTb1oQ==
   dependencies:
     "@bugsnag/js" "^7.16.7"
     "@iarna/toml" "^2.2.5"
@@ -321,17 +321,17 @@
     unique-string "^3.0.0"
     zod "^3.17.3"
 
-"@shopify/cli@3.22.0":
-  version "3.22.0"
-  resolved "https://registry.yarnpkg.com/@shopify/cli/-/cli-3.22.0.tgz#dd579573dd79bb5f5497da1331704adfbec3d12c"
-  integrity sha512-HvZ8yWeM9zdYTBWw+mS+aiKLjWJOClzxqTCLt2obT1YkYvRgHfU5VLygrNSezH7jVonWNnTuBOb+AljwRlWo3w==
+"@shopify/cli@^3.22.1":
+  version "3.22.1"
+  resolved "https://registry.yarnpkg.com/@shopify/cli/-/cli-3.22.1.tgz#5ae1155eaf20b35f086612c3c1ad20d82f1878af"
+  integrity sha512-4F5RkPV1kcpc/7gBczpksrec9oXcS2P/Chn7H+3rk4PfFYcVl2mrAivaNO/OGMJ6hA7Rca5TxzJW+Wf6WZcwVg==
   dependencies:
     "@oclif/core" "1.9.2"
     "@oclif/plugin-commands" "^2.2.0"
     "@oclif/plugin-help" "^5.1.12"
     "@oclif/plugin-plugins" "^2.1.0"
-    "@shopify/cli-kit" "3.22.0"
-    "@shopify/plugin-ngrok" "^3.22.0"
+    "@shopify/cli-kit" "3.22.1"
+    "@shopify/plugin-ngrok" "^3.22.1"
 
 "@shopify/ngrok@^4.3.2":
   version "4.3.2"
@@ -347,13 +347,13 @@
   optionalDependencies:
     hpagent "^0.1.2"
 
-"@shopify/plugin-ngrok@^3.22.0":
-  version "3.22.0"
-  resolved "https://registry.yarnpkg.com/@shopify/plugin-ngrok/-/plugin-ngrok-3.22.0.tgz#4e815813d63f8240881cf33301602870320f951a"
-  integrity sha512-5kDWO8gDhtaOnApIdSiZO8Uri8uow5JK0rVka7w53YS05ikAveI/beNzt6FrgBpW+6jS9386e0oUyayZ+6W8kA==
+"@shopify/plugin-ngrok@^3.22.1":
+  version "3.22.1"
+  resolved "https://registry.yarnpkg.com/@shopify/plugin-ngrok/-/plugin-ngrok-3.22.1.tgz#1d54cf8c823e0bc7eea4a21636e747a5cd504382"
+  integrity sha512-saZnU+clLmZBIKYWbUresXlvQJU6GYmu2Oy2clylHf/ovlmwYeoMs2Y+/g/Pgts5SAsMaTdWKRbYx538D+dyAQ==
   dependencies:
     "@oclif/core" "1.9.2"
-    "@shopify/cli-kit" "3.22.0"
+    "@shopify/cli-kit" "3.22.1"
     "@shopify/ngrok" "^4.3.2"
 
 "@shopify/shopify-cli-extensions@3.21.0":

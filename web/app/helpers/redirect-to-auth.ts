@@ -1,6 +1,6 @@
 import { Shopify } from "@shopify/shopify-api";
 import { Request, Response, Express } from "express";
-import config from '../../config.json';
+import config from '../config.json';
 
 export default async function redirectToAuth(req: Request, res: Response) {
   if (!req.query.shop) {

@@ -9,6 +9,9 @@
     "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
     "incremental": true,
   },
+  "include": [
+    "app/**/*"
+  ],
   "exclude": [
     "node_modules",
     "frontend",

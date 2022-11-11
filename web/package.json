@@ -9,8 +9,9 @@
     "build:ts": "tsc",
     "build:next": "next build ./frontend",
     "dev:ts": "tsc -w",
-    "dev:server": "nodemon --watch dist dist/index.js",
-    "dev": "nodemon index.ts"
+    "dev:server": "nodemon dist/index.js",
+    "dev": "nodemon --watch dist dist/index.js",
+    "dev:old": "run-p dev:ts dev:server"
   },
   "author": "Matt Oskamp",
   "license": "ISC",
