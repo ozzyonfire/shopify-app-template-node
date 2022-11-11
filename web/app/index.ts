@@ -75,6 +75,7 @@ nextApp.prepare().then(() => {
 
   // Setup graphql proxy
   app.use('/graphql', async (req, res) => {
+    console.log('hit the graphql proxy');
     const response = await Shopify.Utils.graphqlProxy(req, res);
     res.send(response.body);
   });

@@ -2,15 +2,28 @@ import { Card, Page, Text } from '@shopify/polaris'
 import { GetServerSidePropsContext } from 'next';
 import { useState } from 'react';
 import { useFetcher } from '../providers/APIProvider';
+import { gql, useQuery } from '@apollo/client';
 
 interface Data {
   name: string;
   height: string;
 }
 
+const GET_SHOP = gql`
+query {
+  shop {
+    name
+  }
+}`;
+
 export default function Home() {
   const fetcher = useFetcher();
   const [data, setData] = useState<Data | null>(null);
+  const {
+    data: gqlData
+  } = useQuery(GET_SHOP);
+
+  console.log('gqlData', gqlData);
 
   const handleGetAPIRequest = async () => {
     const data = await fetcher<Data>('/api/hello');
@@ -35,6 +48,17 @@ export default function Home() {
             {data.name} is {data.height} tall.
           </Text>
         )}
+      </Card>
+
+      <Card
+        sectioned
+        title="Use Apollo Client to query Shopify"
+        primaryFooterAction={{
+          content: 'GraphQL Query',
+          onAction: () => { },
+        }}
+      >
+        <Text as='p' variant='bodyMd'>Use Apollo Client to query Shopify's GraphQL API. The request is verified use session tokens.</Text>
       </Card>
     </Page>
   )
